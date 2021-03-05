@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Eisenstein</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Krub:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+  <link href="assets/css/dropzone.css" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+  
+  <!-- =======================================================
+  * Template Name: Bikin - v4.0.1
+  * Template URL: https://bootstrapmade.com/bikin-free-simple-landing-page-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+
+  
+  <main id="main">
+
+    
+
+    
+    <!-- ======= Features Section ======= -->
+    <section id="upload" class="features" data-aos="fade-down">
+      <div class="container">
+
+        <div style="margin-top:50px;" class="section-title">
+          <h2>Extract Machine-Readable Text</h2>
+          <h4>Using Tesseract</h4>
+          
+        </div>
+        
+          
+        
+        <select id="language_select" class="form-select" aria-label="select">
+          {% for key, value in languages.items() %}
+          <option value="{{key}}">{{value}}</option>
+           {% endfor %}
+        </select>
+        <div class="form-check">
+          <input id="lemmatize_text" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+          <label id="lemmatize_label" class="form-check-label" for="flexCheckDefault">
+            Lemmatize text
+          </label>
+        </div>
+        <div class="row content">
+          <form id='dropzone' action="/uploadfiles/" class="dropzone" enctype="multipart/form-data" method="post">                   
+          </form>
+        </div>
+       
+
+      </div>
+    </section><!-- End Features Section -->
+
+   
+    <!-- ======= Services Section ======= -->
+    <section id="services" class="services">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+          <h2>Texts</h2>
+          </p>
+        </div>
+        <div id="text_results" class="row">
+
+          
+
+          
+        </div>
+
+      </div>
+    </section><!-- End Services Section -->
+
+     
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+    
+
+    <div class="container d-md-flex py-4">
+
+      <div class="me-md-auto text-center text-md-start">
+        
+        
+      </div>
+      <div class="social-links text-center text-md-right pt-3 pt-md-0">
+        <a href="https://twitter.com/apjanco" class="twitter"><i class="bx bxl-twitter"></i></a>
+        
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+  <script src="assets/js/dropzone.js"></script>
+  
+
+  <script>
+    let has_stanza = {{ has_stanza|safe }};
+  
+
+    $(document).ready(function() {
+      $("#lemmatize_text").hide();
+      $("#lemmatize_label").hide();
+      $('#language_select').select2();
+
+    // listen for changes, add or remove lemmatizer button 
+    $('#language_select').on('select2:select', function (e) {
+      let current_code = $('#language_select').select2('data')[0].id;
+      if (has_stanza.includes(current_code)) {
+        // stanza can lemmatize this language
+        $("#lemmatize_text").show();
+        $("#lemmatize_label").show();
+      } else {
+        // hide the lemmatize option 
+        $("#lemmatize_text").hide();
+        $("#lemmatize_label").hide();
+      };
+    });
+  });
+  
+
+  function download(filename) {
+
+    
+    const url = 'download?filename='+filename;
+    window.location.assign(url);
+    
+  };
+
+  function get_texts() {
+    
+
+    const Http = new XMLHttpRequest();
+    const url = 'texts';
+    Http.open("GET", url);
+    Http.send();
+
+    Http.onreadystatechange=(e)=>{
+      let texts_html = Http.responseText;
+      let text_results = document.getElementById('text_results');
+      text_results.innerHTML = texts_html;
+    }
+
+  };
+  
+  Dropzone.options.dropzone = {
+    
+    init: function() {
+      this.on("success", function(file) { get_texts(); });
+      this.on("sending", function(file, xhr, formData){
+        let language_select = document.getElementById('language_select');
+        let lemmatize_text = document.getElementById('lemmatize_text');
+        formData.append("language_select", language_select.value);
+        formData.append("lemmatized_text", lemmatize_text.checked);
+
+});
+    }
+  };
+
+
+  </script>
+  
+</body>
+
+</html>

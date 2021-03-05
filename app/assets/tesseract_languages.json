@@ -1,0 +1,166 @@
+{'Arabic': 'Arabic',
+ 'Armenian': 'Armenian',
+ 'Bengali': 'Bengali',
+ 'Cherokee': 'Cherokee',
+ 'Georgian': 'Georgian',
+ 'Gujarati': 'Gujarati',
+ 'Hebrew': 'Hebrew',
+ 'Japanese': 'Japanese',
+ 'Kannada': 'Kannada',
+ 'Khmer': 'Khmer',
+ 'Lao': 'Lao',
+ 'Latin': 'Latin',
+ 'Malayalam': 'Malayalam',
+ 'Sinhala': 'Sinhala',
+ 'Syriac': 'Syriac',
+ 'Tamil': 'Tamil',
+ 'Telugu': 'Telugu',
+ 'Thai': 'Thai',
+ 'Tibetan': 'Tibetan',
+ 'Vietnamese': 'Vietnamese',
+ 'afr': 'Afrikaans',
+ 'amh': 'Amharic',
+ 'ara': 'Arabic',
+ 'asm': 'Assamese',
+ 'aze': 'Azerbaijani',
+ 'bel': 'Belarusian',
+ 'ben': 'Bengali',
+ 'bod': 'Tibetan',
+ 'bos': 'Bosnian',
+ 'bre': 'Breton',
+ 'bul': 'Bulgarian',
+ 'cat': 'Catalan',
+ 'ceb': 'Cebuano',
+ 'ces': 'Czech',
+ 'chr': 'Cherokee',
+ 'cos': 'Corsican',
+ 'cym': 'Welsh',
+ 'dan': 'Danish',
+ 'deu': 'German',
+ 'div': 'Dhivehi',
+ 'dzo': 'Dzongkha',
+ 'ell': 'Modern Greek (1453-)',
+ 'eng': 'English',
+ 'enm': 'Middle English (1100-1500)',
+ 'epo': 'Esperanto',
+ 'est': 'Estonian',
+ 'eus': 'Basque',
+ 'fao': 'Faroese',
+ 'fas': 'Persian',
+ 'fil': 'Filipino',
+ 'fin': 'Finnish',
+ 'fra': 'French',
+ 'frk': 'Frankish',
+ 'frm': 'Middle French (ca. 1400-1600)',
+ 'fry': 'Western Frisian',
+ 'gla': 'Scottish Gaelic',
+ 'gle': 'Irish',
+ 'glg': 'Galician',
+ 'grc': 'Ancient Greek (to 1453)',
+ 'guj': 'Gujarati',
+ 'hat': 'Haitian',
+ 'heb': 'Hebrew',
+ 'hin': 'Hindi',
+ 'hrv': 'Croatian',
+ 'hun': 'Hungarian',
+ 'hye': 'Armenian',
+ 'iku': 'Inuktitut',
+ 'ind': 'Indonesian',
+ 'isl': 'Icelandic',
+ 'ita': 'Italian',
+ 'jav': 'Javanese',
+ 'jpn': 'Japanese',
+ 'kan': 'Kannada',
+ 'kat': 'Georgian',
+ 'kaz': 'Kazakh',
+ 'khm': 'Khmer',
+ 'kir': 'Kirghiz',
+ 'kmr': 'Northern Kurdish',
+ 'kor': 'Korean',
+ 'lao': 'Lao',
+ 'lat': 'Latin',
+ 'lav': 'Latvian',
+ 'lit': 'Lithuanian',
+ 'ltz': 'Luxembourgish',
+ 'mal': 'Malayalam',
+ 'mar': 'Marathi',
+ 'mkd': 'Macedonian',
+ 'mlt': 'Maltese',
+ 'mon': 'Mongolian',
+ 'mri': 'Maori',
+ 'msa': 'Malay (macrolanguage)',
+ 'mya': 'Burmese',
+ 'nep': 'Nepali (macrolanguage)',
+ 'nld': 'Dutch',
+ 'nor': 'Norwegian',
+ 'oci': 'Occitan (post 1500)',
+ 'ori': 'Oriya (macrolanguage)',
+ 'pan': 'Panjabi',
+ 'pol': 'Polish',
+ 'por': 'Portuguese',
+ 'pus': 'Pushto',
+ 'que': 'Quechua',
+ 'ron': 'Romanian',
+ 'rus': 'Russian',
+ 'san': 'Sanskrit',
+ 'sin': 'Sinhala',
+ 'slk': 'Slovak',
+ 'slv': 'Slovenian',
+ 'snd': 'Sindhi',
+ 'spa': 'Spanish',
+ 'sqi': 'Albanian',
+ 'srp': 'Serbian',
+ 'sun': 'Sundanese',
+ 'swa': 'Swahili (macrolanguage)',
+ 'swe': 'Swedish',
+ 'syr': 'Syriac',
+ 'tam': 'Tamil',
+ 'tat': 'Tatar',
+ 'tel': 'Telugu',
+ 'tgk': 'Tajik',
+ 'tha': 'Thai',
+ 'tir': 'Tigrinya',
+ 'ton': 'Tonga (Tonga Islands)',
+ 'tur': 'Turkish',
+ 'uig': 'Uighur',
+ 'ukr': 'Ukrainian',
+ 'urd': 'Urdu',
+ 'uzb': 'Uzbek',
+ 'vie': 'Vietnamese',
+ 'yid': 'Yiddish',
+ 'yor': 'Yoruba'}
+
+
+
+
+
+Canadian_Aboriginal is not a valid ISO-639 value
+Cyrillic is not a valid ISO-639 value
+Devanagari is not a valid ISO-639 value
+Ethiopic is not a valid ISO-639 value
+Fraktur is not a valid ISO-639 value
+Greek is not a valid ISO-639 value
+Gurmukhi is not a valid ISO-639 value
+HanS is not a valid ISO-639 value
+HanS_vert is not a valid ISO-639 value
+HanT is not a valid ISO-639 value
+HanT_vert is not a valid ISO-639 value
+Hangul is not a valid ISO-639 value
+Hangul_vert is not a valid ISO-639 value
+Japanese_vert is not a valid ISO-639 value
+Myanmar is not a valid ISO-639 value
+Oriya is not a valid ISO-639 value
+Thaana is not a valid ISO-639 value
+aze_cyrl is not a valid ISO-639 value
+chi_sim is not a valid ISO-639 value
+chi_sim_vert is not a valid ISO-639 value
+chi_tra is not a valid ISO-639 value
+chi_tra_vert is not a valid ISO-639 value
+ita_old is not a valid ISO-639 value
+jpn_vert is not a valid ISO-639 value
+kat_old is not a valid ISO-639 value
+kor_vert is not a valid ISO-639 value
+osd is not a valid ISO-639 value
+spa_old is not a valid ISO-639 value
+srp_latn is not a valid ISO-639 value
+uzb_cyrl is not a valid ISO-639 value
