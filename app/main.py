@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, Form, File, UploadFile, HTTPException, Response
+from fastapi import FastAPI, Request, Form, File, UploadFile, HTTPException, Response,WebSocket
 from fastapi.exceptions import WebSocketRequestValidationError
 from fastapi.responses import HTMLResponse, FileResponse
 import srsly
@@ -29,10 +29,36 @@ async def root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request, "languages":tesseract_languages, "has_stanza":has_stanza})
 
 
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    while True:
+        data = await websocket.receive_text()
+        print(data)
+        html_content = """"""
+        for text in texts:
+            html_content += f"""
+                
+                <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="fade-up" data-aos-delay="100">
+                <div class="icon-box">
+                <h4 class="title"><a href="">{text['filename']}</a></h4>
+                <p>{text['file_type']}</p>
+                <p class="description">{text['text'][:500]}</p>
+                <div class="icon"><i onclick="download('{text['filename']}');" class="bx bx-download"></i></div>
+
+                </div>
+            </div>
+
     
+        """
+
+        await websocket.send_text(html_content)
 
 @app.get("/texts", response_class=HTMLResponse)
-async def get_texts():
+async def get_texts(current_texts:str = None):
+    #if entries in texts not in current_texts, delete them 
+    #This will keep dict in sync with browser
+    
     html_content = """"""
     for text in texts:
         html_content += f"""
@@ -51,6 +77,7 @@ async def get_texts():
     """
     return HTMLResponse(content=html_content, status_code=200)
 
+
 def process_with_language(temp_file:str,language_select:str) -> str:
     try:
         text = textract.process(temp_file, language=language_select)
@@ -58,7 +85,6 @@ def process_with_language(temp_file:str,language_select:str) -> str:
     except Exception as e:
         return Response(content=str(e), status_code=500)
      
-
 
 @app.post("/uploadfiles")
 def save_texts(file: UploadFile = File(...),language_select:str= Form(...), lemmatized_text:str= Form(...)):

@@ -177,6 +177,15 @@
     
   };
 
+  //New Websocket version of Texts area 
+  // with https let ws = new WebSocket("wss://eisenstein.apjan.co/ws");
+  ws = new WebSocket("ws://localhost:8000/ws");
+  ws.onmessage = function(event) {
+    let text_results = document.getElementById('text_results');
+    text_results.innerHTML = event.data;
+};
+
+ 
   function get_texts(current_files) {
     console.log(current_files);
     const Http = new XMLHttpRequest();
@@ -210,7 +219,7 @@
           accepted_files.forEach(function(file) {
             current_files.push(file.name);
           });
-          get_texts(current_files); 
+          ws.send(current_files.join());
         }
       );
 
