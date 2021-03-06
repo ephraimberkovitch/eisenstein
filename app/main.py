@@ -26,6 +26,7 @@ tesseract_languages = srsly.read_json("./app/tesseract_languages.json")
 tesseract_stanza = srsly.read_json("./app/tesseract_to_stanza_codes.json")
 #has_stanza = [a[0] for a in tesseract_stanza.items()] Until I can get stanza to behave
 has_stanza = ['rus']
+
 # Routes 
 @app.get("/")
 async def root(request: Request):
@@ -134,6 +135,6 @@ async def download(filename:str = None):
 
 @app.get("/clear_texts")
 async def download():
-    texts = texts_var()
+    global texts 
     texts = []
     return texts

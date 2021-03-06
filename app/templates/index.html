@@ -233,7 +233,8 @@
     $('#dropzone').empty();
     $('#text_results').empty();
     $.get( "clear_texts", function( data ) {
-      $('#trashcan').css("color", "green");;
+      $('#trashcan').css("color", "green");
+      console.log(data);
     });
   };
 
