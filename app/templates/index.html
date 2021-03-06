@@ -76,7 +76,7 @@
           </form>
           
         </div>
-        <i onclick="clear_dropzone();" style="font-size: 1.5em;" class="bx bx-refresh"></i>
+        <i id="trashcan" onclick="clear_dropzone();" style="font-size: 1.5em;" class="bx bx-trash"></i>
 
       </div>
     </section><!-- End Features Section -->
@@ -152,6 +152,7 @@
       $("#lemmatize_text").hide();
       $("#lemmatize_label").hide();
       $('#language_select').select2();
+      get_texts();
 
     // listen for changes, add or remove lemmatizer button 
     $('#language_select').on('select2:select', function (e) {
@@ -186,8 +187,8 @@
 };
 
  
-  function get_texts(current_files) {
-    console.log(current_files);
+  function get_texts() {
+   
     const Http = new XMLHttpRequest();
     const url = 'texts';
     Http.open("GET", url);
@@ -231,7 +232,9 @@
   function clear_dropzone() {
     $('#dropzone').empty();
     $('#text_results').empty();
-    
+    $.get( "clear_texts", function( data ) {
+      $('#trashcan').css("color", "green");;
+    });
   };
 
   </script>

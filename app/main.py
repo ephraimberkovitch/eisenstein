@@ -17,6 +17,9 @@ app.mount("/assets", StaticFiles(directory="./app/assets"), name="assets")
 
 # Session variables
 texts = []
+def texts_var():
+    return texts
+
 language_select = None
 lemmatized_text = None 
 tesseract_languages = srsly.read_json("./app/tesseract_languages.json")
@@ -34,9 +37,15 @@ async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     while True:
         data = await websocket.receive_text()
-        print(data)
+        selected_texts = data.split(',')
+        texts= texts_var() # Not sure this is needed, retreives global variable? 
+        selected_texts = [text for text in texts if text['filename'] in selected_texts]
+        # remove unselected texts and duplicates from texts 
+        [texts.remove(text) for text in texts if text not in selected_texts]
+        #texts = lst.count(x)
+        
         html_content = """"""
-        for text in texts:
+        for text in selected_texts:
             html_content += f"""
                 
                 <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="fade-up" data-aos-delay="100">
@@ -55,10 +64,7 @@ async def websocket_endpoint(websocket: WebSocket):
         await websocket.send_text(html_content)
 
 @app.get("/texts", response_class=HTMLResponse)
-async def get_texts(current_texts:str = None):
-    #if entries in texts not in current_texts, delete them 
-    #This will keep dict in sync with browser
-    
+async def get_texts(current_texts:str = None): 
     html_content = """"""
     for text in texts:
         html_content += f"""
@@ -81,9 +87,10 @@ async def get_texts(current_texts:str = None):
 def process_with_language(temp_file:str,language_select:str) -> str:
     try:
         text = textract.process(temp_file, language=language_select)
+        text = text.decode('utf-8')
         return text
     except Exception as e:
-        return Response(content=str(e), status_code=500)
+        return str(e)
      
 
 @app.post("/uploadfiles")
@@ -93,8 +100,8 @@ def save_texts(file: UploadFile = File(...),language_select:str= Form(...), lemm
     temp_file = Path(f'/tmp/{file.filename}')
     temp_file.write_bytes(contents)
  
-    text= process_with_language(temp_file,language_select)
-    text = text.decode('utf-8')
+    text= process_with_language(str(temp_file),language_select)
+   
     if lemmatized_text == 'true':
         
         if language_select == 'rus':
@@ -117,7 +124,6 @@ async def download(filename:str = None):
         text = text[0]
         #{'filename': 'NEH-Preferred-Seal820.jpg', 'file_type': 'image/jpeg', 'text': 'NATIONAL\nENDOWMENT\nFOR THE\nHUMANITIES\n\n \n\x0c'}
         temp_file = Path('/tmp/'+ text['filename'])
-        print(text['text'])
         temp_file.write_text(text['text'])
         new_name = text['filename'].split('.')[0] +".txt"
         return FileResponse(temp_file, media_type=text['file_type'], filename=new_name)
@@ -125,3 +131,9 @@ async def download(filename:str = None):
     else:
         print('error')
         raise HTTPException(status_code=404, detail=f"Item {filename} not found")
+
+@app.get("/clear_texts")
+async def download():
+    texts = texts_var()
+    texts = []
+    return texts
