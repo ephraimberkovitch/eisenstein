@@ -26,10 +26,13 @@ has_stanza = ['rus']
 # Routes 
 @app.get("/")
 async def root(request: Request):
-
     return templates.TemplateResponse("index.html", {"request": request, "languages":tesseract_languages, "has_stanza":has_stanza})
 
-def generate_html_response():
+
+    
+
+@app.get("/texts", response_class=HTMLResponse)
+async def get_texts():
     html_content = """"""
     for text in texts:
         html_content += f"""
@@ -47,10 +50,6 @@ def generate_html_response():
    
     """
     return HTMLResponse(content=html_content, status_code=200)
-
-@app.get("/texts", response_class=HTMLResponse)
-async def get_texts():
-    return generate_html_response()
 
 def process_with_language(temp_file:str,language_select:str) -> str:
     try:

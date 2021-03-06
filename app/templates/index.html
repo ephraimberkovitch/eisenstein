@@ -143,6 +143,7 @@
   
 
   <script>
+
     let has_stanza = {{ has_stanza|safe }};
   
 
@@ -175,9 +176,8 @@
     
   };
 
-  function get_texts() {
-    
-
+  function get_texts(current_files) {
+    console.log(current_files);
     const Http = new XMLHttpRequest();
     const url = 'texts';
     Http.open("GET", url);
@@ -190,22 +190,39 @@
     }
 
   };
-  
+   // TODO need to match Texts area with files listed in dropzone
   Dropzone.options.dropzone = {
     
     init: function() {
-      this.on("success", function(file) { get_texts(); });
+      
+      //POST sent with file and form data
       this.on("sending", function(file, xhr, formData){
         let language_select = document.getElementById('language_select');
         let lemmatize_text = document.getElementById('lemmatize_text');
         formData.append("language_select", language_select.value);
         formData.append("lemmatized_text", lemmatize_text.checked);
 
+      //When upload completed, #TODO need event for tesseract complete
+      this.on("success", function(file) { 
+          let accepted_files = this.getAcceptedFiles();
+          current_files = [];
+          accepted_files.forEach(function(file) {
+            current_files.push(file.name);
+          });
+          get_texts(current_files); 
+        }
+      );
+
+        function clear_dropzone() {
+          $('#dropzone').empty();
+        };
 });
     }
   };
 
-
+function clear_dropzone(){
+  Dropzone.removeAllFiles();
+}
   </script>
   
 </body>
