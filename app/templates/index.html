@@ -74,8 +74,9 @@
         <div class="row content">
           <form id='dropzone' action="/uploadfiles" class="dropzone" enctype="multipart/form-data" method="post">                   
           </form>
+          
         </div>
-       
+        <i onclick="clear_dropzone();" style="font-size: 1.5em;" class="bx bx-refresh"></i>
 
       </div>
     </section><!-- End Features Section -->
@@ -213,16 +214,15 @@
         }
       );
 
-        function clear_dropzone() {
-          $('#dropzone').empty();
-        };
+        
 });
     }
   };
 
-function clear_dropzone(){
-  Dropzone.removeAllFiles();
-}
+  function clear_dropzone() {
+    $('#dropzone').empty();
+  };
+
   </script>
   
 </body>
