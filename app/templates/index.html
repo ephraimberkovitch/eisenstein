@@ -188,7 +188,6 @@
     ws = new WebSocket("ws://"+document.location.host +"/ws");
   };
 
-  
   ws.onmessage = function(event) {
     let text_results = document.getElementById('text_results');
     text_results.innerHTML = event.data;
