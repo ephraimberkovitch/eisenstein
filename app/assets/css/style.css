@@ -668,7 +668,8 @@ section {
 # Services
 --------------------------------------------------------------*/
 .services {
-  background: #2d405f;
+  background: linear-gradient(90deg, rgba(94,46,162,1) 0%, rgba(46,85,109,1) 100%);
+  background-image: url("/assets/img/background.png");
   padding-bottom: 80px;
 }
 
