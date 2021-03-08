@@ -180,7 +180,7 @@
 
   // For DEV, in production use wss
   let current_url = document.URL;
-  if (current_url.includes('localhost'){
+  if (current_url.includes('localhost')) {
     ws = new WebSocket("ws://localhost:8000/ws");
   } else if (current_url.includes('https')) {
     ws = new WebSocket("wss://"+document.location.host +"/ws");

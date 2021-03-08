@@ -89,6 +89,8 @@ def process_with_language(temp_file:str,language_select:str) -> str:
     try:
         text = textract.process(temp_file, language=language_select)
         text = text.decode('utf-8')
+        if '\x0c' in text: # Odd bit of binary (end page) that sneaks in
+            text = text.replace('\x0c','')
         return text
     except Exception as e:
         return str(e)
@@ -96,7 +98,6 @@ def process_with_language(temp_file:str,language_select:str) -> str:
 
 @app.post("/uploadfiles")
 def save_texts(file: UploadFile = File(...),language_select:str= Form(...), lemmatized_text:str= Form(...)):
-    print(lemmatized_text, language_select)
     contents = file.file.read()
     temp_file = Path(f'/tmp/{file.filename}')
     temp_file.write_bytes(contents)
