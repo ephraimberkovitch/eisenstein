@@ -8,3 +8,4 @@ textract
 srsly
 spacy
 pymorphy2
+websockets

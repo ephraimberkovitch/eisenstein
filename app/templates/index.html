@@ -178,16 +178,10 @@
     
   };
 
-  // For DEV, in production use wss
-  let current_url = document.URL;
-  if (current_url.includes('localhost')) {
-    ws = new WebSocket("ws://localhost:8000/ws");
-  } else if (current_url.includes('https')) {
-    ws = new WebSocket("wss://"+document.location.host +"/ws");
-  } else {
-    ws = new WebSocket("ws://"+document.location.host +"/ws");
-  };
-
+  ws = new WebSocket("wss://eisenstein.apjan.co/ws");
+  ws.onopen = function(event) {
+  console.log('WebSocket is connected.');
+};
   ws.onmessage = function(event) {
     let text_results = document.getElementById('text_results');
     text_results.innerHTML = event.data;
