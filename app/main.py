@@ -39,14 +39,14 @@ async def websocket_endpoint(websocket: WebSocket):
     while True:
         data = await websocket.receive_text()
         selected_texts = data.split(',')
-        texts= texts_var() # Not sure this is needed, retreives global variable? 
-        selected_texts = [text for text in texts if text['filename'] in selected_texts]
+        #texts= texts_var() # Not sure this is needed, retreives global variable? 
+        #selected_texts = [text for text in texts if text['filename'] in selected_texts]
         # remove unselected texts and duplicates from texts 
-        [texts.remove(text) for text in texts if text not in selected_texts]
+        #[texts.remove(text) for text in texts if text['filename'] not in selected_texts]
         #texts = lst.count(x)
         
         html_content = """"""
-        for text in selected_texts:
+        for text in texts:
             html_content += f"""
                 
                 <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="fade-up" data-aos-delay="100">
