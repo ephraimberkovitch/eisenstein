@@ -179,7 +179,7 @@
 
   //New Websocket version of Texts area 
   // with https let ws = new WebSocket("wss://eisenstein.apjan.co/ws");
-  ws = new WebSocket("ws://localhost:8000/ws");
+  ws = new WebSocket("ws://eisenstein.apjan.co/ws");
   ws.onmessage = function(event) {
     let text_results = document.getElementById('text_results');
     text_results.innerHTML = event.data;
