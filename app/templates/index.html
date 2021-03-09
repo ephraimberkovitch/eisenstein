@@ -154,7 +154,7 @@
       $("#lemmatize_text").hide();
       $("#lemmatize_label").hide();
       $('#language_select').select2();
-      get_texts();
+
 
     // listen for changes, add or remove lemmatizer button 
     $('#language_select').on('select2:select', function (e) {
@@ -191,18 +191,7 @@
 
  
   function get_texts() {
-   
-    const Http = new XMLHttpRequest();
-    const url = 'texts';
-    Http.open("GET", url);
-    Http.send();
-
-    Http.onreadystatechange=(e)=>{
-      let texts_html = Http.responseText;
-      let text_results = document.getElementById('text_results');
-      text_results.innerHTML = texts_html;
-    }
-
+    ws.send('ping');
   };
    // TODO need to match Texts area with files listed in dropzone
   Dropzone.options.dropzone = {
@@ -215,19 +204,16 @@
         let lemmatize_text = document.getElementById('lemmatize_text');
         formData.append("language_select", language_select.value);
         formData.append("lemmatized_text", lemmatize_text.checked);
+        
 
       //When upload completed, #TODO need event for tesseract complete
       this.on("success", function(file) { 
-          let accepted_files = this.getAcceptedFiles();
-          current_files = [];
-          accepted_files.forEach(function(file) {
-            current_files.push(file.name);
-          });
-          ws.send(current_files.join());
+         console.log('here have' +file.name);
+          ws.send(file.name);
         }
       );
 
-        
+     
 });
     }
   };
@@ -237,10 +223,16 @@
     $('#text_results').empty();
     $.get( "clear_texts", function( data ) {
       $('#trashcan').css("color", "green");
-      console.log(data);
     });
   };
 
+  // var intervalId = window.setInterval(function(){
+    // This is a hack because dropzone submits POST, not to the socket
+    // The websocket sends the processed file, but there is a gap between POST
+    // and when the text is ready, if I get_texts() on POST, the file is mysteriously not there
+    // so this calls the socket every 5 seconds, not great, but the best I know to do for now.
+   // get_texts();
+  //}, 5000); -->
   </script>
   
 </body>

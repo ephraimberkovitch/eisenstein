@@ -17,11 +17,11 @@ app.mount("/assets", StaticFiles(directory="./app/assets"), name="assets")
 
 # Session variables
 texts = []
-def texts_var():
-    return texts
+
 
 language_select = None
 lemmatized_text = None 
+
 tesseract_languages = srsly.read_json("./app/tesseract_languages.json")
 tesseract_stanza = srsly.read_json("./app/tesseract_to_stanza_codes.json")
 #has_stanza = [a[0] for a in tesseract_stanza.items()] Until I can get stanza to behave
@@ -38,51 +38,28 @@ async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     while True:
         data = await websocket.receive_text()
-        selected_texts = data.split(',')
-        #texts= texts_var() # Not sure this is needed, retreives global variable? 
-        #selected_texts = [text for text in texts if text['filename'] in selected_texts]
-        # remove unselected texts and duplicates from texts 
-        #[texts.remove(text) for text in texts if text['filename'] not in selected_texts]
-        #texts = lst.count(x)
-        
-        html_content = """"""
-        for text in texts:
-            html_content += f"""
-                
-                <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="fade-up" data-aos-delay="100">
-                <div class="icon-box">
-                <h4 class="title"><a href="">{text['filename']}</a></h4>
-                <p>{text['file_type']}</p>
-                <p class="description">{text['text'][:500]}</p>
-                <div class="icon"><i onclick="download('{text['filename']}');" class="bx bx-download"></i></div>
+        if data:
+            print(data)
+            html_content = """"""
+            global texts
+            for text in texts:
+                html_content += f"""
+                    
+                    <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="fade-up" data-aos-delay="100">
+                    <div class="icon-box">
+                    <h4 class="title"><a href="">{text['filename']}</a></h4>
+                    <p>{text['file_type']}</p>
+                    <p class="description">{text['text'][:500]}</p>
+                    <div class="icon"><i onclick="download('{text['filename']}');" class="bx bx-download"></i></div>
 
+                    </div>
                 </div>
-            </div>
 
-    
-        """
+        
+            """
 
-        await websocket.send_text(html_content)
+            await websocket.send_text(html_content)
 
-@app.get("/texts", response_class=HTMLResponse)
-async def get_texts(current_texts:str = None): 
-    html_content = """"""
-    for text in texts:
-        html_content += f"""
-            
-            <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="fade-up" data-aos-delay="100">
-            <div class="icon-box">
-              <h4 class="title"><a href="">{text['filename']}</a></h4>
-              <p>{text['file_type']}</p>
-              <p class="description">{text['text'][:500]}</p>
-              <div class="icon"><i onclick="download('{text['filename']}');" class="bx bx-download"></i></div>
-
-            </div>
-          </div>
-
-   
-    """
-    return HTMLResponse(content=html_content, status_code=200)
 
 
 def process_with_language(temp_file:str,language_select:str) -> str:
@@ -116,11 +93,13 @@ def save_texts(file: UploadFile = File(...),language_select:str= Form(...), lemm
             text = ' '.join([i for i in p])
         
     temp_file.unlink() # Delete file from system
+    global texts
     texts.append({"filename": file.filename, "file_type": file.content_type, "text":text})
     return file.filename
 
 @app.get("/download")
 async def download(filename:str = None):
+    global texts
     text = [a for a in texts if a['filename'] == filename]
     if len(text) == 1:
         text = text[0]
