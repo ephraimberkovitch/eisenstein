@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, Form, File, UploadFile, HTTPException, Response,WebSocket
+from fastapi import FastAPI, APIRouter, Request, Form, File, UploadFile, HTTPException, Response, WebSocket
 from fastapi.exceptions import WebSocketRequestValidationError
 from fastapi.responses import HTMLResponse, FileResponse
 import srsly
@@ -15,9 +15,14 @@ templates = Jinja2Templates(directory="app/templates")
 app = FastAPI()
 app.mount("/assets", StaticFiles(directory="./app/assets"), name="assets")
 
+callback_router = APIRouter()
+
 # Session variables
 texts = []
-
+def add_to_texts(text:dict):
+    global texts
+    texts.append(text)
+    return texts
 
 language_select = None
 lemmatized_text = None 
@@ -32,35 +37,26 @@ has_stanza = ['rus']
 async def root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request, "languages":tesseract_languages, "has_stanza":has_stanza})
 
+@app.get("/texts", response_class=HTMLResponse)
+async def get_texts():
+    html_content = """"""
+    global texts
+    for text in texts:
+        html_content += f"""
+            
+            <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="fade-up" data-aos-delay="100">
+            <div class="icon-box">
+            <h4 class="title"><a href="">{text['filename']}</a></h4>
+            <p>{text['file_type']}</p>
+            <p class="description">{text['text'][:500]}</p>
+            <div class="icon"><i onclick="download('{text['filename']}');" class="bx bx-download"></i></div>
 
-@app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
-    await websocket.accept()
-    while True:
-        data = await websocket.receive_text()
-        if data:
-            print(data)
-            html_content = """"""
-            global texts
-            for text in texts:
-                html_content += f"""
-                    
-                    <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="fade-up" data-aos-delay="100">
-                    <div class="icon-box">
-                    <h4 class="title"><a href="">{text['filename']}</a></h4>
-                    <p>{text['file_type']}</p>
-                    <p class="description">{text['text'][:500]}</p>
-                    <div class="icon"><i onclick="download('{text['filename']}');" class="bx bx-download"></i></div>
-
-                    </div>
-                </div>
-
-        
-            """
-
-            await websocket.send_text(html_content)
+            </div>
+        </div>
 
 
+    """
+    return HTMLResponse(content=html_content, status_code=200)
 
 def process_with_language(temp_file:str,language_select:str) -> str:
     try:
@@ -73,7 +69,7 @@ def process_with_language(temp_file:str,language_select:str) -> str:
         return str(e)
      
 
-@app.post("/uploadfiles")
+@app.post("/uploadfiles",callbacks=callback_router.routes)
 def save_texts(file: UploadFile = File(...),language_select:str= Form(...), lemmatized_text:str= Form(...)):
     contents = file.file.read()
     temp_file = Path(f'/tmp/{file.filename}')
@@ -93,7 +89,6 @@ def save_texts(file: UploadFile = File(...),language_select:str= Form(...), lemm
             text = ' '.join([i for i in p])
         
     temp_file.unlink() # Delete file from system
-    global texts
     texts.append({"filename": file.filename, "file_type": file.content_type, "text":text})
     return file.filename
 
