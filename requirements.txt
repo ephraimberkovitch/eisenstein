@@ -9,3 +9,5 @@ srsly
 spacy
 pymorphy2
 websockets
+pytesseract 
+pdf2image

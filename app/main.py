@@ -5,6 +5,10 @@ import srsly
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 import textract
+import pytesseract 
+
+from pdf2image import convert_from_path
+
 from pathlib import Path
 import spacy
 import pymorphy2
@@ -74,9 +78,13 @@ def save_texts(file: UploadFile = File(...),language_select:str= Form(...), lemm
     contents = file.file.read()
     temp_file = Path(f'/tmp/{file.filename}')
     temp_file.write_bytes(contents)
- 
-    text= process_with_language(str(temp_file),language_select)
-   
+    text = ''
+    if file.content_type == 'application/pdf':
+        images = convert_from_path(temp_file) 
+        for img in images: 
+            text += pytesseract.image_to_string(img, lang=language_select)
+    else:
+        text += process_with_language(str(temp_file),language_select)
     if lemmatized_text == 'true':
         
         if language_select == 'rus':

@@ -89,6 +89,7 @@
 
         <div class="section-title">
           <h2>Texts</h2>
+          <div id="spinner" class="lds-ripple"><div></div><div></div></div>
           </p>
         </div>
         <i id="reload" onclick="get_texts();" style="font-size: 1.5em; color:white;" class="bx bx-refresh"></i>
@@ -154,6 +155,7 @@
     $(document).ready(function() {
       $("#lemmatize_text").hide();
       $("#lemmatize_label").hide();
+      $('#spinner').hide();
       $('#language_select').select2();
 
 
@@ -201,7 +203,7 @@
   
    // TODO need to match Texts area with files listed in dropzone
   Dropzone.options.dropzone = {
-    
+    timeout: 300000000,
     init: function() {
       
       //POST sent with file and form data
@@ -210,6 +212,7 @@
         let lemmatize_text = document.getElementById('lemmatize_text');
         formData.append("language_select", language_select.value);
         formData.append("lemmatized_text", lemmatize_text.checked);
+        $('#spinner').show();
         
 
       //When upload completed, #TODO need event for tesseract complete
@@ -218,7 +221,9 @@
           let texts_html = data.xhr.responseText;
           let text_results = document.getElementById('text_results');
           text_results.innerHTML = texts_html;
+          $('#spinner').hide();
           //setTimeout(() => {  get_texts(); }, 3000);
+
 
         }
       );
