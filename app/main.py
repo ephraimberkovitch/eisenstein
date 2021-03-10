@@ -89,8 +89,27 @@ def save_texts(file: UploadFile = File(...),language_select:str= Form(...), lemm
             text = ' '.join([i for i in p])
         
     temp_file.unlink() # Delete file from system
+    #texts.append({"filename": file.filename, "file_type": file.content_type, "text":text})
+    global texts
     texts.append({"filename": file.filename, "file_type": file.content_type, "text":text})
-    return file.filename
+    html_content = """"""
+    for text in texts:
+        html_content += f"""
+            
+            <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="fade-up" data-aos-delay="100">
+            <div class="icon-box">
+            <h4 class="title"><a href="">{text['filename']}</a></h4>
+            <p>{text['file_type']}</p>
+            <p class="description">{text['text'][:500]}</p>
+            <div class="icon"><i onclick="download('{text['filename']}');" class="bx bx-download"></i></div>
+
+            </div>
+        </div>
+
+
+    """
+    return HTMLResponse(content=html_content, status_code=200)
+
 
 @app.get("/download")
 async def download(filename:str = None):

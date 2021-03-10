@@ -212,8 +212,12 @@
         
 
       //When upload completed, #TODO need event for tesseract complete
-      this.on("success", function(file) { 
-          setTimeout(() => {  get_texts(); }, 3000);
+      this.on("success", function(data) { 
+          
+          let texts_html = data.xhr.responseText;
+          let text_results = document.getElementById('text_results');
+          text_results.innerHTML = texts_html;
+          //setTimeout(() => {  get_texts(); }, 3000);
 
         }
       );
