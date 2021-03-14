@@ -128,6 +128,7 @@
   <div id="preloader"></div>
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
+  <input type="hidden" id="session_id" name="session_id" value="">
   <!-- Vendor JS Files -->
   <script
   src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -157,7 +158,8 @@
       $("#lemmatize_label").hide();
       $('#spinner').hide();
       $('#language_select').select2();
-
+      
+      
 
     // listen for changes, add or remove lemmatizer button 
     $('#language_select').on('select2:select', function (e) {
@@ -174,6 +176,7 @@
     });
   });
   
+  
 
   function download(filename) {
 
@@ -187,9 +190,9 @@
 
  
   function get_texts() {
-      
+      let session_id = document.getElementById('session_id').value;
       const Http = new XMLHttpRequest();
-      const url = 'texts';
+      const url = 'texts?session_id=' + session_id;
       Http.open("GET", url);
       Http.send();
   
@@ -210,8 +213,10 @@
       this.on("sending", function(file, xhr, formData){
         let language_select = document.getElementById('language_select');
         let lemmatize_text = document.getElementById('lemmatize_text');
+        let session_id = document.getElementById('session_id');
         formData.append("language_select", language_select.value);
         formData.append("lemmatized_text", lemmatize_text.checked);
+        formData.append("session_id", session_id.value);
         $('#spinner').show();
         
 
@@ -248,7 +253,12 @@
     // so this calls the socket every 5 seconds, not great, but the best I know to do for now.
    // get_texts();
   //}, 5000); -->
-  </script>
+  
+  $.get( "start_session", function( data ) {
+    $('#session_id').val(data);
+  });
+    
+</script>
   
 </body>
 

@@ -6,6 +6,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 import textract
 import pytesseract 
+from pydantic import BaseModel
 
 from pdf2image import convert_from_path
 
@@ -20,6 +21,13 @@ app = FastAPI()
 app.mount("/assets", StaticFiles(directory="./app/assets"), name="assets")
 
 callback_router = APIRouter()
+
+class Text(BaseModel):
+    filename: str
+    file_type: str
+    text: str
+    session: str
+
 
 # Session variables
 texts = []
@@ -42,10 +50,12 @@ async def root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request, "languages":tesseract_languages, "has_stanza":has_stanza})
 
 @app.get("/texts", response_class=HTMLResponse)
-async def get_texts():
+async def get_texts(session_id:str=None):
+    
     html_content = """"""
     global texts
-    for text in texts:
+    session_texts = [text for text in texts if text['session_id'] == session_id]
+    for text in session_texts:
         html_content += f"""
             
             <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="fade-up" data-aos-delay="100">
@@ -74,7 +84,7 @@ def process_with_language(temp_file:str,language_select:str) -> str:
      
 
 @app.post("/uploadfiles",callbacks=callback_router.routes)
-def save_texts(file: UploadFile = File(...),language_select:str= Form(...), lemmatized_text:str= Form(...)):
+def save_texts(file: UploadFile = File(...),language_select:str= Form(...), lemmatized_text:str= Form(...), session_id:str = Form(...)):
     contents = file.file.read()
     temp_file = Path(f'/tmp/{file.filename}')
     temp_file.write_bytes(contents)
@@ -99,9 +109,10 @@ def save_texts(file: UploadFile = File(...),language_select:str= Form(...), lemm
     temp_file.unlink() # Delete file from system
     #texts.append({"filename": file.filename, "file_type": file.content_type, "text":text})
     global texts
-    texts.append({"filename": file.filename, "file_type": file.content_type, "text":text})
+    texts.append({"filename": file.filename, "file_type": file.content_type, "text":text, "session_id":session_id})
+    session_texts = [text for text in texts if text['session_id'] == session_id]
     html_content = """"""
-    for text in texts:
+    for text in session_texts:
         html_content += f"""
             
             <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="fade-up" data-aos-delay="100">
@@ -140,3 +151,11 @@ async def download():
     global texts 
     texts = []
     return texts
+
+
+@app.get("/start_session")
+async def get_session_key():
+    import string 
+    import random 
+    return ''.join(random.choices(string.ascii_uppercase +
+                             string.digits, k = 50)) 
