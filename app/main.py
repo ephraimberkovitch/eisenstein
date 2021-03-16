@@ -7,7 +7,7 @@ from fastapi.staticfiles import StaticFiles
 import textract
 import pytesseract 
 from pydantic import BaseModel
-
+from typing import List
 from pdf2image import convert_from_path
 
 from pathlib import Path
@@ -31,9 +31,7 @@ class Text(BaseModel):
 
 # Session variables
 texts = []
-def add_to_texts(text:dict):
-    global texts
-    texts.append(text)
+def update_texts(texts:List):
     return texts
 
 language_select = None
@@ -133,19 +131,14 @@ def save_texts(file: UploadFile = File(...),language_select:str= Form(...), lemm
 @app.get("/download")
 async def download(filename:str = None):
     global texts
-    text = [a for a in texts if a['filename'] == filename]
-    if len(text) == 1:
-        text = text[0]
-        #{'filename': 'NEH-Preferred-Seal820.jpg', 'file_type': 'image/jpeg', 'text': 'NATIONAL\nENDOWMENT\nFOR THE\nHUMANITIES\n\n \n\x0c'}
-        temp_file = Path('/tmp/'+ text['filename'])
-        temp_file.write_text(text['text'])
-        new_name = text['filename'].split('.')[0] +".txt"
-        return FileResponse(temp_file, media_type=text['file_type'], filename=new_name)
+    text = [a for a in texts if a['filename'] == filename][0]
+    
+    temp_file = Path('/tmp/'+ text['filename'])
+    temp_file.write_text(text['text'])
+    new_name = text['filename'].split('.')[0] +".txt"
+    return FileResponse(temp_file, media_type=text['file_type'], filename=new_name)
 
-    else:
-        print('error')
-        raise HTTPException(status_code=404, detail=f"Item {filename} not found")
-
+    
 @app.get("/clear_texts")
 async def download():
     global texts 
