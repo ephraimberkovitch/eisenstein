@@ -21,3 +21,14 @@ for example, to deploy from this repository you'd type `https://heroku.com/deplo
 
 Please note that you will be prompted to create a Hiroku user account if you do not have one. 
 
+## Setup
+* brew install tesseract-lang
+* tesseract ~/Downloads/tesseract_nonenglish_german.png out -l deu
+* brew install poppler
+
+## Run
+* uvicorn main:app --reload --app-dir app
+
+### References
+* https://www.pyimagesearch.com/2020/08/03/tesseract-ocr-for-non-english-languages/ 
+
